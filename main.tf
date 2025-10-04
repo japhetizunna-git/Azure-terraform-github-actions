@@ -93,7 +93,7 @@ resource "azurerm_network_interface" "okwara" {
 }
 
 resource "azurerm_linux_virtual_machine" "okwara" {
-  name                            = "okwara-vm"
+  name                            = "okwara-vm2"
   resource_group_name             = data.azurerm_resource_group.okwara.name
   location                        = data.azurerm_resource_group.okwara.location
   size                            = "Standard_F2"
