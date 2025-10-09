@@ -62,46 +62,46 @@
 # }
 
 
-data "azurerm_resource_group" "okwara" {
-  name = "mybackendtf"
+data "azurerm_resource_group" "mybackendtf2" {
+  name = "mybackendtf2"
 }
 
 resource "azurerm_virtual_network" "network" {
   name                = "terraformfizu-network"
   address_space       = ["10.0.0.0/16"]
-  location            = data.azurerm_resource_group.okwara.location
-  resource_group_name = data.azurerm_resource_group.okwara.name
+  location            = data.azurerm_resource_group.mybackendtf2.location
+  resource_group_name = data.azurerm_resource_group.mybackendtf2.name
 }
 
-resource "azurerm_subnet" "okwara" {
+resource "azurerm_subnet" "mybackendtf2" {
   name                 = "internal"
-  resource_group_name  = data.azurerm_resource_group.okwara.name
+  resource_group_name  = data.azurerm_resource_group.mybackendtf2.name
   virtual_network_name = azurerm_virtual_network.network.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_network_interface" "okwara" {
-  name                = "okwara-nic"
-  location            = data.azurerm_resource_group.okwara.location
-  resource_group_name = data.azurerm_resource_group.okwara.name
+resource "azurerm_network_interface" "mybackendtf2" {
+  name                = "mybackendtf2-nic"
+  location            = data.azurerm_resource_group.mybackendtf2.location
+  resource_group_name = data.azurerm_resource_group.mybackendtf2.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.okwara.id
+    subnet_id                     = azurerm_subnet.mybackendtf2.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_linux_virtual_machine" "okwara" {
-  name                            = "okwara-vm2"
-  resource_group_name             = data.azurerm_resource_group.okwara.name
-  location                        = data.azurerm_resource_group.okwara.location
+resource "azurerm_linux_virtual_machine" "mybackendtf2"
+  name                            = "mybackendtf-vm2"
+  resource_group_name             = data.azurerm_resource_group.mybackendtf2.name
+  location                        = data.azurerm_resource_group.mybackendtf2.location
   size                            = "Standard_F2"
   admin_username                  = "adminuser"
   admin_password                  = "fizume@3111"
   disable_password_authentication = false
   network_interface_ids = [
-    azurerm_network_interface.okwara.id,
+    azurerm_network_interface.mybackendtf.id,
   ]
 
   os_disk {
@@ -109,10 +109,10 @@ resource "azurerm_linux_virtual_machine" "okwara" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_reference {
+   source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts"
     version   = "latest"
-  }
-}
+     }
+   }
