@@ -100,7 +100,7 @@ resource "azurerm_linux_virtual_machine" "mybackendtf2"
   admin_username                  = "adminuser"
   admin_password                  = "fizume@3111"
   disable_password_authentication = false
-  network_interface_ids = [
+  network_interface_ids= [
     azurerm_network_interface.mybackendtf.id,
   ]
 
@@ -115,4 +115,4 @@ resource "azurerm_linux_virtual_machine" "mybackendtf2"
     sku       = "22_04-lts"
     version   = "latest"
      }
-   }
+    }
