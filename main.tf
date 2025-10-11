@@ -62,8 +62,8 @@
 # }
 
 
-data "azurerm_resource_group" "mybackendtf2" {
-  name = "mybackendtf2"
+data "azurerm_resource_group" "mybackendtf" {
+  name = "mybackendtf"
 }
 
 resource "azurerm_virtual_network" "network" {
@@ -73,15 +73,15 @@ resource "azurerm_virtual_network" "network" {
   resource_group_name = data.azurerm_resource_group.mybackendtf2.name
 }
 
-resource "azurerm_subnet" "mybackendtf2" {
+resource "azurerm_subnet" "mybackendtf" {
   name                 = "internal"
   resource_group_name  = data.azurerm_resource_group.mybackendtf2.name
   virtual_network_name = azurerm_virtual_network.network.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_network_interface" "mybackendtf2" {
-  name                = "mybackendtf2-nic"
+resource "azurerm_network_interface" "mybackendtf" {
+  name                = "mybackendtf-nic"
   location            = data.azurerm_resource_group.mybackendtf2.location
   resource_group_name = data.azurerm_resource_group.mybackendtf2.name
 
@@ -92,7 +92,7 @@ resource "azurerm_network_interface" "mybackendtf2" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "mybackendtf2"
+resource "azurerm_linux_virtual_machine" "mybackendtf2" {
   name                            = "mybackendtf-vm2"
   resource_group_name             = data.azurerm_resource_group.mybackendtf2.name
   location                        = data.azurerm_resource_group.mybackendtf2.location
