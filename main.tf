@@ -69,38 +69,38 @@ data "azurerm_resource_group" "mybackendtf" {
 resource "azurerm_virtual_network" "network" {
   name                = "terraformfizu-network"
   address_space       = ["10.0.0.0/16"]
-  location            = data.azurerm_resource_group.mybackendtf2.location
-  resource_group_name = data.azurerm_resource_group.mybackendtf2.name
+  location            = data.azurerm_resource_group.mybackendtf.location
+  resource_group_name = data.azurerm_resource_group.mybackendtf.name
 }
 
 resource "azurerm_subnet" "mybackendtf" {
   name                 = "internal"
-  resource_group_name  = data.azurerm_resource_group.mybackendtf2.name
+  resource_group_name  = data.azurerm_resource_group.mybackendtf.name
   virtual_network_name = azurerm_virtual_network.network.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
 resource "azurerm_network_interface" "mybackendtf" {
   name                = "mybackendtf-nic"
-  location            = data.azurerm_resource_group.mybackendtf2.location
-  resource_group_name = data.azurerm_resource_group.mybackendtf2.name
+  location            = data.azurerm_resource_group.mybackendtf.location
+  resource_group_name = data.azurerm_resource_group.mybackendtf.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.mybackendtf2.id
+    subnet_id                     = azurerm_subnet.mybackendtf.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_linux_virtual_machine" "mybackendtf2" {
+resource "azurerm_linux_virtual_machine" "mybackendtf" {
   name                            = "mybackendtf-vm2"
-  resource_group_name             = data.azurerm_resource_group.mybackendtf2.name
-  location                        = data.azurerm_resource_group.mybackendtf2.location
+  resource_group_name             = data.azurerm_resource_group.mybackendtf.name
+  location                        = data.azurerm_resource_group.mybackendtf.location
   size                            = "Standard_F2"
   admin_username                  = "adminuser"
   admin_password                  = "fizume@3111"
   disable_password_authentication = false
-  network_interface_ids= [
+  network_interface_ids = [
     azurerm_network_interface.mybackendtf.id,
   ]
 
@@ -109,10 +109,10 @@ resource "azurerm_linux_virtual_machine" "mybackendtf2" {
     storage_account_type = "Standard_LRS"
   }
 
-   source_image_reference {
+  source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
     sku       = "22_04-lts"
     version   = "latest"
-     }
-    }
+  }
+}
